@@ -3,20 +3,20 @@ module Hatio
 
   class Bundle
     attr_accessor :name, :module, :version, :summary, :author, :email, :url, :description, :changes, :entities, :dependencies, :bootstrap_controllers
-    
+
     def initialize(name, version)
       self.name = name
       self.version = version
-      self.module = Kernel.const_get(name.capitalize)
+      self.module = Kernel.const_get(name.gsub('-', '_').classify)
       self.entities = []
       self.dependencies = []
       self.bootstrap_controllers = []
-      
+
       yield self if block_given?
 
       $HATIO_BUNDLES << self
     end
-    
+
     def self.ordered_bundle_list
       ordered_list = []
       $HATIO_BUNDLES.each do |bundle|
